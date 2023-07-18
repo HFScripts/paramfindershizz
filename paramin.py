@@ -22,7 +22,7 @@ def process_subdomains(subdomains):
         url = line.split(' - ')[-1].strip()
 
         try:
-            response = requests.get(url, verify=False)
+            response = requests.get(url, verify=False, timeout=10)  # waits 10 seconds
         except requests.exceptions.RequestException as e:
             continue
 
@@ -60,7 +60,7 @@ def process_subdomains(subdomains):
 
             if user_field_found and pass_field_found:
                 try:
-                    post_response = requests.post(action, data=params, verify=False)
+                    post_response = requests.post(action, data=params, verify=False, timeout=10)
                     parsed_url = urllib.parse.urlparse(post_response.url)
                     post = {'method': 'POST', 'path': parsed_url.path, 'host': parsed_url.netloc, 'headers': {}, 'params': params}
                     for key, value in post_response.request.headers.items():
